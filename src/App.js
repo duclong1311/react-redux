@@ -1,39 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
-import { connect } from "react-redux"
+import { useSelector, useDispatch } from 'react-redux'
+import { decrement, increment } from './redux/slices/counterSlice';
 
-import {
-  increaseCounter,
-  decreaseCounter,
-} from "./action/actions"
-
-function App(props) {
+function App() {
+  const dispatch = useDispatch();
+  const count = useSelector(state => state.counter.value)
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <div>Count: {props.count}</div>
-
-        <button onClick={() => props.increaseCounter()}>Increase Count</button>
-
-        <button onClick={() => props.decreaseCounter()}>Decrease Count</button>
+        <div>
+          <button onClick={() => dispatch(increment())}>increment</button>
+          <button onClick={() => dispatch(decrement())}>decrement</button>
+          <div>{count}</div>
+        </div>
       </header>
     </div>
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    count: state.counter.count,
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    increaseCounter: () => dispatch(increaseCounter()),
-
-    decreaseCounter: () => dispatch(decreaseCounter()),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default App;
